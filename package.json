@@ -1,0 +1,9 @@
+{
+  "name": "ecof_api",
+  "dependencies": {
+    "hono": "^4.11.3"
+  },
+  "scripts": {
+    "dev": "bun run --hot src/index.ts"
+  }
+}
