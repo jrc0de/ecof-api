@@ -33,6 +33,7 @@ function getEasterDate(year) {
  * @returns {number}
  */
 export function getTemporalIndex(dateStr) {
+    // Calculation for current year
     const { year } = formatISOToYMD(dateStr)
     const easter = getEasterDate(year)
     const septuagesimaSunday = addDaysToISO(easter, -63)
@@ -40,25 +41,28 @@ export function getTemporalIndex(dateStr) {
     const { year: cYear, month: cMonth, day: cDay } = formatISOToYMD(christmas)
     const christmasDate = new Date(cYear, cMonth - 1, cDay)
     const christmasDayOfWeek = christmasDate.getDay()
-    const daysToSubtract = christmasDayOfWeek + 49
-    const secondLastSundayAfterPentecost = addDaysToISO(christmas, -daysToSubtract)
+    const secondLastSundayAfterPentecost = addDaysToISO(christmas, -(christmasDayOfWeek + 49))
+    const sundayInOctaveOfChristmas = addDaysToISO(christmas, (christmasDayOfWeek === 0 ? 0 : (7 - christmasDayOfWeek)))
+    // Calculation for year - 1
+    const previousChristmas = formatYMDToISO({ year: year - 1, month: 12, day: 25 })
+    const { year: pcYear, month: pcMonth, day: pcDay } = formatISOToYMD(previousChristmas)
+    const previousChristmasDate = new Date(pcYear, pcMonth - 1, pcDay)
+    const previousChristmasDayOfWeek = previousChristmasDate.getDay()
+    const previousSundayInOctaveOfChristmas = addDaysToISO(previousChristmas, (previousChristmasDayOfWeek === 0 ? 7 : (7 - previousChristmasDayOfWeek)))
     let seasonIndex = 0
     let dayIndex = 0
     if (dateStr > secondLastSundayAfterPentecost && dateStr <= christmas) {
         seasonIndex = 1000
         dayIndex = diffDays(secondLastSundayAfterPentecost, dateStr)
-    } else if (dateStr > christmas) {
+    } else if (dateStr >= sundayInOctaveOfChristmas) {
         seasonIndex = 1500
-        dayIndex = diffDays()
+        dayIndex = diffDays(sundayInOctaveOfChristmas, dateStr) + 1
     } else if (dateStr < septuagesimaSunday) {
         seasonIndex = 1500
-        dayIndex = diffDays()
-    }
-    else if (dateStr >= septuagesimaSunday && dateStr <= secondLastSundayAfterPentecost) {
+        dayIndex = diffDays(previousSundayInOctaveOfChristmas, dateStr) + 1
+    } else if (dateStr >= septuagesimaSunday && dateStr <= secondLastSundayAfterPentecost) {
         seasonIndex = 2000
         dayIndex = diffDays(septuagesimaSunday, dateStr) + 1
-    } else if (dateStr < septuagesimaSunday) {
-        seasonIndex = 300
     }
     return +(seasonIndex + dayIndex)
 }
