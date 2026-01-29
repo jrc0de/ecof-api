@@ -1,4 +1,4 @@
-import { synaxar } from "../repositories/vita.js"
+import { synaxarVita } from "../repositories/vita.js"
 
 /**
  * Get short and long life for a given saint
@@ -6,6 +6,6 @@ import { synaxar } from "../repositories/vita.js"
  * @returns {Promise<Object>}
  */
 export async function getSaintLives(id) {
-    const vita = await synaxar.getVita(id)
+    const vita = await synaxarVita.getVita(id)
     return vita
 }

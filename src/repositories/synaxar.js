@@ -1,0 +1,13 @@
+import { db } from "../utils/database.js"
+
+export const synaxarSaints = {
+    async getSaints() {
+        const rows = await db`
+                SELECT saint
+                FROM synaxaire
+                WHERE calendrier != 2
+                ORDER BY saint ASC
+            `
+        return rows || null
+    },
+}
