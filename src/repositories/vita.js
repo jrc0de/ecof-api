@@ -3,7 +3,7 @@ import { db } from "../utils/database.js"
 export const synaxarVita = {
     async getVita(id) {
         const rows = await db`
-                SELECT vie_b, vie_l 
+                SELECT vie_b, vita_long, vita_synaxar
                 FROM vies
                 WHERE id = ${id}
             `
