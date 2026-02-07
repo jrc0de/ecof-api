@@ -4,7 +4,7 @@ export const calendar = {
     async getSynaxar(month, day) {
         const rows = await db`
             SELECT synaxaire.principal, synaxaire.prefixe, synaxaire.saint, 
-                   vies.id, vies.vie_l, vies.vie_b, vies.img
+                   vies.id
             FROM synaxaire
             JOIN vies ON synaxaire.vies_id = vies.id
             WHERE mois = ${month} AND jour = ${day} 
@@ -15,8 +15,7 @@ export const calendar = {
 
     async getTemporalReadings(temporalIndex) {
         const rows = await db`
-            SELECT temporal.block, temporal.book_txt, temporal.reading, 
-                   temporal_blocks.block_title
+            SELECT temporal.id, temporal.book_txt
             FROM temporal 
             JOIN temporal_blocks ON temporal.block = block_id
             WHERE temporalIndex = ${temporalIndex}
@@ -27,8 +26,7 @@ export const calendar = {
 
     async getSanctoralReadings(sanctoralIndex) {
         const rows = await db`
-            SELECT sanctoral.block, sanctoral.book_txt, sanctoral.reading, 
-                   sanctoral_blocks.block_title
+            SELECT sanctoral.id, sanctoral.book_txt
             FROM sanctoral 
             JOIN sanctoral_blocks ON sanctoral.block = block_id
             WHERE sanctoralIndex = ${sanctoralIndex}
