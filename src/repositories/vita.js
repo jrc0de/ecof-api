@@ -3,9 +3,10 @@ import { db } from "../utils/database.js"
 export const synaxarVita = {
     async getVita(id) {
         const rows = await db`
-                SELECT vie_b, vita_long, vita_liturgy, img
+                SELECT vies.vie_b, vies.vita_long, vies.vita_liturgy, vies.img, synaxaire.mois, synaxaire.jour, synaxaire.prefixe, synaxaire.saint
                 FROM vies
-                WHERE id = ${id}
+                LEFT JOIN synaxaire ON vies.id = synaxaire.vies_id
+                WHERE vies.id = ${id}
             `
         return rows[0] || null
     },
