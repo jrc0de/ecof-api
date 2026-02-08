@@ -9,7 +9,7 @@
         "fmt:check": "oxfmt --check"
     },
     "dependencies": {
-        "hono": "^4.11.7",
+        "hono": "^4.11.9",
         "ical.js": "^2.2.1"
     },
     "devDependencies": {
