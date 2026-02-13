@@ -14,21 +14,32 @@ const calendars = {
     grenoble: "https://p126-caldav.icloud.com/published/2/MTIwNjA2MTU3OTEyMDYwNslsLAbTXDEyQ3nzhZH4CU-QMn3vxNaC9YK5Y-YGcahz7E5HLEPO2r3F3gMviLU1cngfNABRAK2LEfTtWzgZ1io",
     montpellier: "https://calendar.google.com/calendar/ical/paroissetheophanie.ecof%40gmail.com/public/basic.ics",
     lisieux: "https://calendar.google.com/calendar/ical/2f99103a78d9eb2c14d2ca0bb7b9f0ca1a9381c5f2875689f08503b7c8d6af3c@group.calendar.google.com/public/basic.ics",
+} as const
+
+type City = keyof typeof calendars
+
+type CalendarEvent = {
+    title: string
+    start: Date
+    end: Date
+    description: string
+    location: string
+    uid: string
 }
 
-/**
- * Get offices calendar for a given parish
- * @param {string} city
- * @returns {Promise<Object>}
- */
-export async function getParishInfo(city) {
-    const url = calendars[city]
+type ParishInfo = {
+    events: CalendarEvent[]
+}
+
+export async function getParishInfo(city: City): Promise<ParishInfo> {
+    const url: string = calendars[city]
     const response = await fetch(url)
     const icsText = await response.text()
     const jcalData = ICAL.parse(icsText)
     const comp = new ICAL.Component(jcalData)
     const vevents = comp.getAllSubcomponents("vevent")
-    const allEvents = vevents.map((vevent) => {
+
+    const allEvents: CalendarEvent[] = vevents.map((vevent) => {
         const event = new ICAL.Event(vevent)
         return {
             title: event.summary,
@@ -39,12 +50,13 @@ export async function getParishInfo(city) {
             uid: event.uid,
         }
     })
-    // Filter future events
+
     const now = new Date()
     const upcomingEvents = allEvents.filter((event) => {
         return new Date(event.end) >= now
     })
-    // Sort by start date
-    upcomingEvents.sort((a, b) => new Date(a.start) - new Date(b.start))
+
+    upcomingEvents.sort((a, b) => a.start.getTime() - b.start.getTime())
+
     return { events: upcomingEvents }
 }

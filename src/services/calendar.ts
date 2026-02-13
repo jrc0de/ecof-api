@@ -1,12 +1,7 @@
 import { formatISOToYMD, formatYMDToISO, addDaysToISO, diffDays } from "../utils/dates.js"
 import { calendar } from "../repositories/calendar.js"
 
-/**
- * Get ISO formatted Easter date (YYYY-MM-DD) for a given year
- * @param {number} year
- * @returns {string}
- */
-function getEasterDate(year) {
+function getEasterDate(year: number) {
     const n = year % 19
     const c = Math.floor(year / 100)
     const u = year % 100
@@ -28,12 +23,7 @@ function getEasterDate(year) {
     })
 }
 
-/**
- * Get temporal index for a given YYYY-MM-DD date
- * @param {string} dateStr
- * @returns {number}
- */
-export function getTemporalIndex(dateStr) {
+export function getTemporalIndex(dateStr: string) {
     // Calculation for current year
     const { year } = formatISOToYMD(dateStr)
     const easter = getEasterDate(year)
@@ -68,22 +58,12 @@ export function getTemporalIndex(dateStr) {
     return +(seasonIndex + dayIndex)
 }
 
-/**
- * Get sanctoral index for a given YYYY-MM-DD date
- * @param {string} dateStr
- * @returns {number}
- */
-export function getSanctoralIndex(dateStr) {
+export function getSanctoralIndex(dateStr: string) {
     const { month, day } = formatISOToYMD(dateStr)
     return month * 100 + day
 }
 
-/**
- * Get all liturgical calendar informations for a given date
- * @param {string} date
- * @returns {Promise<Object>}
- */
-export async function getCalendarInfo(date) {
+export async function getCalendarInfo(date: string) {
     const temporalIndex = getTemporalIndex(date)
     const sanctoralIndex = getSanctoralIndex(date)
     const { month, day } = formatISOToYMD(date)
