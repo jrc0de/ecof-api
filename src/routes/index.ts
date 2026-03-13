@@ -8,6 +8,7 @@ import reading from "./reading.js"
 import synaxar from "./synaxar.js"
 import images from "./images.js"
 import privacy from "./privacy.ts"
+import monitoredVitas from "./vitaMonitoring.ts"
 
 const routes = new Hono()
 
@@ -21,5 +22,6 @@ routes.route("/api/reading", reading)
 routes.route("/api/synaxar", synaxar)
 routes.route("/api/images", images)
 routes.route("/api/privacy", privacy)
+routes.route("api/monitoring", monitoredVitas)
 
 export default routes
