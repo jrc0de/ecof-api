@@ -1,9 +1,8 @@
 import { marked } from "marked"
 
-// Configure une seule fois pour toute l'app
 marked.setOptions({
-    gfm: true, // GitHub Flavored Markdown (tables, strikethrough…)
-    breaks: true, // \n → <br>
+    gfm: true,
+    breaks: false,
 })
 
 export function parseMarkdown(text: string | null): string | null {

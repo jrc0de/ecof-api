@@ -1,5 +1,5 @@
-import { db } from "../utils/database.js"
-import { parseMarkdown } from "../utils/markdown.js"
+import { db } from "../utils/database"
+import { parseMarkdown } from "../utils/markdown"
 
 export const synaxarVita = {
     async getVita(id: string) {

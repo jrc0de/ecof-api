@@ -1,4 +1,4 @@
-import { db } from "../utils/database.js"
+import { db } from "../utils/database"
 
 export const readings = {
     async getScriptureReading(id: string) {
