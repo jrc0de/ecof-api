@@ -1,14 +1,15 @@
 import { Hono } from "hono"
 import { compress } from "hono/compress"
 import { cors } from "hono/cors"
-import calendar from "./calendar.js"
-import parish from "./parish.js"
-import vita from "./vita.js"
-import reading from "./reading.js"
-import synaxar from "./synaxar.js"
-import images from "./images.js"
-import privacy from "./privacy.ts"
-import monitoredVitas from "./vitaMonitoring.ts"
+import calendar from "./calendar"
+import parish from "./parish"
+import vita from "./vita"
+import reading from "./reading"
+import synaxar from "./synaxar"
+import images from "./images"
+import privacy from "./privacy"
+import monitoredVitas from "./vitaMonitoring"
+import appConfigRouter from "./appConfig"
 
 const routes = new Hono()
 
@@ -23,5 +24,6 @@ routes.route("/api/synaxar", synaxar)
 routes.route("/api/images", images)
 routes.route("/api/privacy", privacy)
 routes.route("api/monitoring", monitoredVitas)
+routes.route("/api/app-config", appConfigRouter)
 
 export default routes

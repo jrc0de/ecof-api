@@ -10,7 +10,7 @@
         "check": "bunx depcheck --ignores='bun'"
     },
     "dependencies": {
-        "hono": "^4.12.7",
+        "hono": "^4.12.8",
         "ical.js": "^2.2.1",
         "marked": "^17.0.4"
     },
