@@ -7,7 +7,7 @@ export function getAppConfig() {
             },
             android: {
                 latest: "3.0.0",
-                minimum: "1.0.0",
+                minimum: "3.0.0",
             },
         },
         store_urls: {
