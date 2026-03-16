@@ -31,6 +31,21 @@ type ParishInfo = {
     events: CalendarEvent[]
 }
 
+function cleanDescription(raw: string | null | undefined): string {
+    if (!raw) return ""
+    return raw
+        .replace(/<br\s*\/?>/gi, "\n") // <br> → saut de ligne
+        .replace(/<\/p>/gi, "\n") // </p> → saut de ligne
+        .replace(/<[^>]*>/g, "") // supprime toutes les autres balises HTML
+        .replace(/&nbsp;/g, " ") // entité HTML espace
+        .replace(/&amp;/g, "&")
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
+        .replace(/&quot;/g, '"')
+        .replace(/\n{3,}/g, "\n\n") // max 2 sauts de ligne consécutifs
+        .trim()
+}
+
 export async function getParishInfo(city: string): Promise<ParishInfo> {
     const url = calendars[city]
 
@@ -54,7 +69,6 @@ export async function getParishInfo(city: string): Promise<ParishInfo> {
         const event = new ICAL.Event(vevent)
 
         if (event.isRecurring()) {
-            // Développer toutes les occurrences dans la fenêtre [now, maxDate]
             const expand = new ICAL.RecurExpansion({
                 component: vevent,
                 dtstart: event.startDate,
@@ -78,18 +92,17 @@ export async function getParishInfo(city: string): Promise<ParishInfo> {
                     title: event.summary,
                     start: startJS,
                     end: endJS,
-                    description: event.description,
+                    description: cleanDescription(event.description),
                     location: event.location,
                     uid: event.uid,
                 })
             }
         } else {
-            // Événement simple, comportement inchangé
             allEvents.push({
                 title: event.summary,
                 start: event.startDate.toJSDate(),
                 end: event.endDate.toJSDate(),
-                description: event.description,
+                description: cleanDescription(event.description),
                 location: event.location,
                 uid: event.uid,
             })
