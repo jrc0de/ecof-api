@@ -20,8 +20,8 @@ const calendars: Record<string, string> = {
 
 type CalendarEvent = {
     title: string
-    start: Date
-    end: Date
+    start: string
+    end: string
     description: string
     location: string
     uid: string
@@ -34,16 +34,32 @@ type ParishInfo = {
 function cleanDescription(raw: string | null | undefined): string {
     if (!raw) return ""
     return raw
-        .replace(/<br\s*\/?>/gi, "\n") // <br> → saut de ligne
-        .replace(/<\/p>/gi, "\n") // </p> → saut de ligne
-        .replace(/<[^>]*>/g, "") // supprime toutes les autres balises HTML
-        .replace(/&nbsp;/g, " ") // entité HTML espace
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/<\/p>/gi, "\n")
+        .replace(/<[^>]*>/g, "")
+        .replace(/&nbsp;/g, " ")
         .replace(/&amp;/g, "&")
         .replace(/&lt;/g, "<")
         .replace(/&gt;/g, ">")
         .replace(/&quot;/g, '"')
-        .replace(/\n{3,}/g, "\n\n") // max 2 sauts de ligne consécutifs
+        .replace(/\n{3,}/g, "\n\n")
         .trim()
+}
+
+function icalTimeToString(t: ICAL.Time): string {
+    const jsDate = t.toJSDate()
+    const parts = new Intl.DateTimeFormat("fr-FR", {
+        timeZone: "Europe/Paris",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+    }).formatToParts(jsDate)
+    const get = (type: string) => parts.find((p) => p.type === type)?.value ?? "00"
+    return `${get("year")}-${get("month")}-${get("day")}T${get("hour")}:${get("minute")}:${get("second")}`
 }
 
 export async function getParishInfo(city: string): Promise<ParishInfo> {
@@ -59,9 +75,12 @@ export async function getParishInfo(city: string): Promise<ParishInfo> {
     const comp = new ICAL.Component(jcalData)
     const vevents = comp.getAllSubcomponents("vevent")
 
-    const now = new Date()
-    const maxDate = new Date(now)
-    maxDate.setFullYear(maxDate.getFullYear() + 1) // horizon d'un an
+    const nowString = icalTimeToString(ICAL.Time.now())
+    const maxDateString = (() => {
+        const d = new Date()
+        d.setFullYear(d.getFullYear() + 1)
+        return icalTimeToString(ICAL.Time.fromJSDate(d))
+    })()
 
     const allEvents: CalendarEvent[] = []
 
@@ -78,20 +97,20 @@ export async function getParishInfo(city: string): Promise<ParishInfo> {
 
             let next: ICAL.Time | null
             while ((next = expand.next())) {
-                const startJS = next.toJSDate()
+                const startStr = icalTimeToString(next)
 
-                if (startJS > maxDate) break
+                if (startStr > maxDateString) break
 
                 const endTime = next.clone()
                 endTime.addDuration(duration)
-                const endJS = endTime.toJSDate()
+                const endStr = icalTimeToString(endTime)
 
-                if (endJS < now) continue
+                if (endStr < nowString) continue
 
                 allEvents.push({
                     title: event.summary,
-                    start: startJS,
-                    end: endJS,
+                    start: startStr,
+                    end: endStr,
                     description: cleanDescription(event.description),
                     location: event.location,
                     uid: event.uid,
@@ -100,8 +119,8 @@ export async function getParishInfo(city: string): Promise<ParishInfo> {
         } else {
             allEvents.push({
                 title: event.summary,
-                start: event.startDate.toJSDate(),
-                end: event.endDate.toJSDate(),
+                start: icalTimeToString(event.startDate),
+                end: icalTimeToString(event.endDate),
                 description: cleanDescription(event.description),
                 location: event.location,
                 uid: event.uid,
@@ -109,8 +128,8 @@ export async function getParishInfo(city: string): Promise<ParishInfo> {
         }
     }
 
-    const upcomingEvents = allEvents.filter((event) => event.end >= now)
-    upcomingEvents.sort((a, b) => a.start.getTime() - b.start.getTime())
+    const upcomingEvents = allEvents.filter((event) => event.end >= nowString)
+    upcomingEvents.sort((a, b) => a.start.localeCompare(b.start))
 
     return { events: upcomingEvents }
 }
