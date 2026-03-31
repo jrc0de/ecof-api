@@ -1,4 +1,4 @@
-import { formatISOToYMD, formatYMDToISO, addDaysToISO, diffDays } from "../utils/dates"
+import { formatISOToYMD, formatYMDToISO, addDaysToISO, diffDays } from "../utils/dates.js"
 import { calendar } from "../repositories/calendar.js"
 
 function getEasterDate(year: number) {
