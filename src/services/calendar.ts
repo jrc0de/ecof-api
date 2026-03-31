@@ -23,7 +23,7 @@ function getEasterDate(year: number) {
     })
 }
 
-export function getTemporalIndex(dateStr: string) {
+function getTemporalIndex(dateStr: string) {
     // Calculation for current year
     const { year } = formatISOToYMD(dateStr)
     const easter = getEasterDate(year)
@@ -58,7 +58,7 @@ export function getTemporalIndex(dateStr: string) {
     return +(seasonIndex + dayIndex)
 }
 
-export function getSanctoralIndex(dateStr: string) {
+function getSanctoralIndex(dateStr: string) {
     const { month, day } = formatISOToYMD(dateStr)
     return month * 100 + day
 }
