@@ -20,23 +20,25 @@ export const calendar = {
 
     async getTemporalReadings(temporalIndex: number) {
         const rows = await db`
-            SELECT temporal.id, temporal.block, temporal.book_txt, temporal_blocks.block_title
-            FROM temporal 
-            JOIN temporal_blocks ON temporal.block = block_id
-            WHERE temporalIndex = ${temporalIndex}
-            ORDER BY temporal.id ASC
-        `
+        SELECT temporal.id, temporal.block, temporal.book_txt, temporal_blocks.block_title
+        FROM temporal 
+        JOIN temporal_blocks ON temporal.block = block_id
+        WHERE temporalIndex = ${temporalIndex}
+        ORDER BY temporal.id ASC
+    `
 
-        const grouped = (rows as TemporalRow[]).reduce((acc: Record<string, TemporalBlock>, row: TemporalRow) => {
+        const grouped = (rows as TemporalRow[]).reduce((acc: Record<string, TemporalBlock & { _minId: number }>, row: TemporalRow) => {
             const key = row.block
             if (!acc[key]) {
-                acc[key] = { block_title: row.block_title, readings: [] }
+                acc[key] = { block_title: row.block_title, readings: [], _minId: row.id }
             }
             acc[key].readings.push({ id: row.id, book_txt: row.book_txt })
             return acc
         }, {})
 
         return Object.values(grouped)
+            .sort((a, b) => a._minId - b._minId)
+            .map(({ _minId, ...block }) => block)
     },
 
     async getSanctoralReadings(sanctoralIndex: number) {
