@@ -9,6 +9,7 @@ import reading from "./reading"
 import synaxar from "./synaxar"
 import images from "./images"
 import privacy from "./privacy"
+import support from "./support"
 import monitoredVitas from "./vitaMonitoring"
 import appConfigRouter from "./appConfig"
 
@@ -25,6 +26,7 @@ routes.route("/api/reading", reading)
 routes.route("/api/synaxar", synaxar)
 routes.route("/api/images", images)
 routes.route("/api/privacy", privacy)
+routes.route("/api/support", support)
 routes.route("api/monitoring", monitoredVitas)
 routes.route("/api/app-config", appConfigRouter)
 
