@@ -37,6 +37,7 @@ function cleanDescription(raw: string | null | undefined): string {
         .replace(/<br\s*\/?>/gi, "\n")
         .replace(/<\/p>/gi, "\n")
         .replace(/<[^>]*>/g, "")
+        .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
         .replace(/&nbsp;/g, " ")
         .replace(/&amp;/g, "&")
         .replace(/&lt;/g, "<")
