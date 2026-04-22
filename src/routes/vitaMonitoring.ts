@@ -73,10 +73,10 @@ synaxarRoutes.get("/", async (c) => {
                     (s: any) => `
                 <tr>
                     <td>${s.saint}</td>
-                    <td>${s.vies_id}</td>
-                    <td><span class="${s.has_vie_b ? "green" : "red"}"></span></td>
-                    <td><span class="${s.has_vita_long ? "green" : "red"}"></span></td>
-                    <td><span class="${s.has_vita_liturgy ? "green" : "red"}"></span></td>
+                    <td>${s.id}</td>
+                    <td><span class="${s.has_v_short ? "green" : "red"}"></span></td>
+                    <td><span class="${s.has_v_long ? "green" : "red"}"></span></td>
+                    <td><span class="${s.has_v_liturgy ? "green" : "red"}"></span></td>
                 </tr>
             `,
                 )

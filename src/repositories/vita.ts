@@ -4,12 +4,11 @@ import { parseMarkdown } from "../utils/markdown"
 export const synaxarVita = {
     async getVita(id: string) {
         const rows = await db`
-      SELECT vies.vie_b, vies.vita_long, vies.vita_liturgy,
-             vies.img, synaxaire.mois, synaxaire.jour,
-             synaxaire.prefixe, synaxaire.saint
-      FROM vies
-      LEFT JOIN synaxaire ON vies.id = synaxaire.vies_id
-      WHERE vies.id = ${id}
+      SELECT v_short as vie_b, v_long as vita_long, v_liturgy as vita_liturgy,
+             img, mois, jour,
+             prefixe, saint
+      FROM synaxaire
+      WHERE id = ${id}
     `
         const row = rows[0]
         if (!row) return null
