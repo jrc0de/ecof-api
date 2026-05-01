@@ -60,7 +60,7 @@ function getTemporalIndex(dateStr: string) {
 
 function getSanctoralIndex(dateStr: string) {
     const { month, day } = formatISOToYMD(dateStr)
-    return month * 100 + day
+    return 10000 + month * 100 + day
 }
 
 export async function getCalendarInfo(date: string) {

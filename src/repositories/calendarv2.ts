@@ -40,11 +40,11 @@ export const calendar = {
 
     async getSanctoralReadings(sanctoralIndex: number) {
         const rows = await db`
-            SELECT sanctoral.id, sanctoral.block, sanctoral.book_txt, blocks.block_title
-            FROM sanctoral 
-            JOIN blocks ON sanctoral.block = block_id
-            WHERE sanctoralIndex = ${sanctoralIndex}
-            ORDER BY sanctoral.id ASC
+            SELECT temporal.id, temporal.block, temporal.book_txt, blocks.block_title
+            FROM temporal 
+            JOIN blocks ON temporal.block = block_id
+            WHERE temporalIndex = ${sanctoralIndex}
+            ORDER BY temporal.id ASC
         `
 
         const grouped = (rows as TemporalRow[]).reduce((acc: Record<string, TemporalBlock & { _minId: number }>, row: TemporalRow) => {
