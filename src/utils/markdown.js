@@ -5,7 +5,7 @@ marked.setOptions({
     breaks: false,
 })
 
-export function parseMarkdown(text: string | null): string | null {
+export function parseMarkdown(text) {
     if (!text) return null
-    return marked(text) as string
+    return marked(text)
 }

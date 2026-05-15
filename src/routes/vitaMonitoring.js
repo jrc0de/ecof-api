@@ -70,7 +70,7 @@ synaxarRoutes.get("/", async (c) => {
         <tbody>
             ${saints
                 .map(
-                    (s: any) => `
+                    (s) => `
                 <tr>
                     <td>${s.saint}</td>
                     <td>${s.id}</td>

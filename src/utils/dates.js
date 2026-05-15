@@ -1,28 +1,22 @@
-type YMD = {
-    year: number
-    month: number
-    day: number
-}
-
 // Format YYYY-MM-DD to {year, month, day}
-export function formatISOToYMD(dateStr: string): YMD {
-    const parts = dateStr.split("-").map(Number)
+export function formatISOToYMD(dateStr) {
+    const [year, month, day] = dateStr.split("-").map(Number)
     return {
-        year: parts[0]!,
-        month: parts[1]!,
-        day: parts[2]!,
+        year,
+        month,
+        day,
     }
 }
 
 // Format {year, month, day} to YYYY-MM-DD
-export function formatYMDToISO({ year, month, day }: YMD): string {
+export function formatYMDToISO({ year, month, day }) {
     const m = String(month).padStart(2, "0")
     const d = String(day).padStart(2, "0")
     return `${year}-${m}-${d}`
 }
 
 // Format Date to YYYY-MM-DD
-export function formatDateToYMD(date: Date): string {
+export function formatDateToYMD(date) {
     const y = date.getFullYear()
     const m = String(date.getMonth() + 1).padStart(2, "0")
     const d = String(date.getDate()).padStart(2, "0")
@@ -30,7 +24,7 @@ export function formatDateToYMD(date: Date): string {
 }
 
 // Add or subtract days to YYYY-MM-DD date
-export function addDaysToISO(dateStr: string, days: number): string {
+export function addDaysToISO(dateStr, days) {
     const { year, month, day } = formatISOToYMD(dateStr)
     const date = new Date(year, month - 1, day)
     date.setDate(date.getDate() + days)
@@ -42,7 +36,7 @@ export function addDaysToISO(dateStr: string, days: number): string {
 }
 
 // Calculate difference in days between two ISO date strings
-export function diffDays(dateStr1: string, dateStr2: string): number {
+export function diffDays(dateStr1, dateStr2) {
     const { year: y1, month: m1, day: d1 } = formatISOToYMD(dateStr1)
     const { year: y2, month: m2, day: d2 } = formatISOToYMD(dateStr2)
     const date1 = new Date(y1, m1 - 1, d1)

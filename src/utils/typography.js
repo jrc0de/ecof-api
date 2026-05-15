@@ -1,7 +1,7 @@
 const NBSP = "\u00A0"
 const NNBSP = "\u202F"
 
-export function applyFrenchTypography(text: string): string {
+export function applyFrenchTypography(text) {
     return text
         .replace(/«\s*/g, `«${NNBSP}`)
         .replace(/\s*»/g, `${NNBSP}»`)
