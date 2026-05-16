@@ -1,5 +1,5 @@
 import { formatISOToYMD, formatYMDToISO, addDaysToISO, diffDays } from "../utils/dates.js"
-import { calendar } from "../repositories/calendarv2.js"
+import { calendar } from "../repositories/calendar.js"
 
 function getEasterDate(year) {
     const n = year % 19

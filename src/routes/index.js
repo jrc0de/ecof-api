@@ -1,7 +1,7 @@
 import { Hono } from "hono"
 import { compress } from "hono/compress"
 import { cors } from "hono/cors"
-import calendarv2 from "./calendarv2"
+import calendar from "./calendar"
 import parish from "./parish"
 import news from "./news"
 import vita from "./vita"
@@ -19,7 +19,9 @@ const routes = new Hono()
 routes.use("*", cors())
 routes.use("*", compress())
 
-routes.route("/api/calendarv2", calendarv2)
+routes.route("/api/calendarv2", calendar) // delete when frontend migrate to /api/calendar
+
+routes.route("/api/calendar", calendar)
 routes.route("/api/parish", parish)
 routes.route("/api/vita", vita)
 routes.route("/api/news", news)
