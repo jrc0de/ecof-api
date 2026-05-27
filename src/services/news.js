@@ -1,5 +1,6 @@
 import { allNews } from "../repositories/news"
 import { parseMarkdown } from "../utils/markdown.js"
+import { applyFrenchTypography } from "../utils/typography.js"
 
 export async function getNews() {
     const news = await allNews.getNews()
@@ -12,6 +13,6 @@ export async function getNewsById(id) {
 
     return {
         ...result,
-        text: parseMarkdown(result.text),
+        text: parseMarkdown(applyFrenchTypography(result.text)),
     }
 }
