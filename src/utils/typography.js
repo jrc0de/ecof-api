@@ -9,15 +9,17 @@ const NNBSP = "\u202F"
  * @returns {string} Le texte avec la typographie française correcte
  */
 export function applyFrenchTypography(text) {
-    return text
-        // « texte  →  «\u202Ftexte (espace fine insécable après le guillemet ouvrant)
-        .replace(/«\s*/g, `«${NNBSP}`)
-        // texte »  →  texte\u202F» (espace fine insécable avant le guillemet fermant)
-        .replace(/\s*»/g, `${NNBSP}»`)
-        // texte !  →  texte\u202F!  (idem pour "?")
-        .replace(/\s*([!?])/g, `${NNBSP}$1`)
-        // Espace fine insécable avant ";" sauf si précédé d'une entité HTML (ex: &#43;, &amp;)
-        .replace(/(?<!&[a-zA-Z0-9#]{1,10})\s*;/g, `${NNBSP};`)
-        // texte :  →  texte\u00A0: (espace insécable classique avant ":")
-        .replace(/\s*:/g, `${NBSP}:`)
+    return (
+        text
+            // « texte  →  «\u202Ftexte (espace fine insécable après le guillemet ouvrant)
+            .replace(/«\s*/g, `«${NNBSP}`)
+            // texte »  →  texte\u202F» (espace fine insécable avant le guillemet fermant)
+            .replace(/\s*»/g, `${NNBSP}»`)
+            // texte !  →  texte\u202F!  (idem pour "?")
+            .replace(/\s*([!?])/g, `${NNBSP}$1`)
+            // Espace fine insécable avant ";" sauf si précédé d'une entité HTML (ex: &#43;, &amp;)
+            .replace(/(?<!&[a-zA-Z0-9#]{1,10})\s*;/g, `${NNBSP};`)
+            // texte :  →  texte\u00A0: (espace insécable classique avant ":")
+            .replace(/\s*:/g, `${NBSP}:`)
+    )
 }
