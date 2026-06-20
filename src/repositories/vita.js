@@ -1,4 +1,4 @@
-import { db } from "../utils/database"
+import { db } from "../utils/pg_database"
 
 export const synaxarVita = {
     async getVita(id) {
@@ -6,7 +6,7 @@ export const synaxarVita = {
           SELECT v_short as vie_b, v_long as vita_long, v_liturgy as vita_liturgy,
                  img, mois, jour,
                  prefixe, saint
-          FROM synaxaire
+          FROM synaxar
           WHERE id = ${id}
         `
         return rows[0] ?? null
