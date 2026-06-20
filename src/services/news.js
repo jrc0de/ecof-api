@@ -11,8 +11,10 @@ export async function getNewsById(id) {
     const result = await allNews.getNewsById(id)
     if (!result) return null
 
+    const { content, ...rest } = result
+
     return {
-        ...result,
-        text: parseMarkdown(applyFrenchTypography(result.text)),
+        ...rest,
+        text: parseMarkdown(applyFrenchTypography(content)),
     }
 }

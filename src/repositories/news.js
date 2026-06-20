@@ -1,4 +1,4 @@
-import { db } from "../utils/database"
+import { db } from "../utils/pg_database"
 
 export const allNews = {
     async getNews() {
@@ -12,7 +12,7 @@ export const allNews = {
 
     async getNewsById(id) {
         const rows = await db`
-        SELECT title, author, slug, published_at, text
+        SELECT title, author, slug, published_at, content
         FROM news
         WHERE id = ${id}
         LIMIT 1
