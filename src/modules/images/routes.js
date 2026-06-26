@@ -6,7 +6,7 @@ const images = new Hono()
 images.use(
     "/*",
     serveStatic({
-        root: "./src/assets",
+        root: `${import.meta.dir}/../../assets`,
     }),
 )
 
